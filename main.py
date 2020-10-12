@@ -27,7 +27,6 @@ class BlacklistFilter:
     def resolve(self, request, handler):
         reply = request.reply()
         question = request.get_q()
-        rid = request.header.id
         question_name = ("%s" % question.qname)
         requested_domain = question_name[:-1]
 
@@ -37,6 +36,7 @@ class BlacklistFilter:
             # Return fake address if avail
             if config['BLACKLIST'][requested_domain]:
                 # Create fake reply
+                rid = request.header.id
                 reply = DNSRecord(DNSHeader(id=rid), q=question,
                                   a=RR(requested_domain, rdata=A(config['BLACKLIST'][requested_domain])))
         else:
