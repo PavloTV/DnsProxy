@@ -24,7 +24,6 @@ def read_config():
 
 
 class BlacklistFilter:
-
     def resolve(self, request, handler):
         reply = request.reply()
         question = request.get_q()
@@ -35,15 +34,13 @@ class BlacklistFilter:
         # Check if blacklisted
         if 'BLACKLIST' in config.sections() and requested_domain in config['BLACKLIST']:
             print('Request Blacklisted %s -> "%s"' % (requested_domain, config['BLACKLIST'][requested_domain]))
-
+            # Return fake address if avail
             if config['BLACKLIST'][requested_domain]:
                 # Create fake reply
                 reply = DNSRecord(DNSHeader(id=rid), q=question,
                                   a=RR(requested_domain, rdata=A(config['BLACKLIST'][requested_domain])))
         else:
-
             print('Request redirected to upstream')
-
             try:
                 if handler.protocol == 'udp':
                     proxy_r = request.send(upstream)
