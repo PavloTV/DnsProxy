@@ -1,7 +1,7 @@
 import configparser as configparser
 
 from dnslib import *
-from dnslib import server, proxy
+from dnslib import server
 
 config_file_name = 'config.ini'
 
