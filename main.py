@@ -27,8 +27,9 @@ class BlacklistFilter:
     def resolve(self, request, handler):
         reply = request.reply()
         question = request.get_q()
-        question_name = ("%s" % question.qname)
-        requested_domain = question_name[:-1]
+        requested_domain = ("%s" % question.qname)
+        if requested_domain.endswith('.'):
+            requested_domain = requested_domain[:-1]
 
         # Check if blacklisted
         if 'BLACKLIST' in config.sections() and requested_domain in config['BLACKLIST']:
